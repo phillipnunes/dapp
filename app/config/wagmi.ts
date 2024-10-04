@@ -5,7 +5,7 @@ import {
 
 const config = getDefaultConfig({
   appName: 'Bitso Dapp',
-  projectId: '9316b7963794299f5d704405bdf2e22c',
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string,
   chains: [sepolia],
   ssr: true,
 });

@@ -10,10 +10,11 @@ import { State, WagmiProvider } from 'wagmi'
 
 const queryClient = new QueryClient()
 
-export function ContextProvider({
-                                  children,
-                                  initialState
-                                }: {
+export function ContextProvider(
+  {
+    children,
+    initialState
+  }: {
   children: ReactNode
   initialState?: State
 }) {
