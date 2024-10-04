@@ -1,6 +1,6 @@
 import '@rainbow-me/rainbowkit/styles.css';
 import "./globals.css";
-import {ContextProvider} from "@/app/context";
+import {ContextProvider} from "../context";
 
 export default function RootLayout({
   children,

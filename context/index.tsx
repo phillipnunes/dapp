@@ -1,7 +1,7 @@
 "use client";
 
 import React, { ReactNode } from 'react'
-import { config } from '@/app/config/wagmi'
+import { config } from '@/config/wagmi'
 import {
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
