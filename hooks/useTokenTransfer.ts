@@ -1,16 +1,19 @@
+'use client'
+
 import { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
-import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
+import {useWriteContract, useWaitForTransactionReceipt, useSwitchChain} from 'wagmi'
 import {TOKEN_ABI} from "@/config/tokenAbi";
 import {Hash} from "viem";
 
+const SEPOLIA_NETWORK_ID = 11155111
 export function useTokenTransfer(tokenAddress: Hash, decimals: number) {
   const [recipient, setRecipient] = useState('')
   const [amount, setAmount] = useState('')
   const [error, setError] = useState<string | null>(null)
 
+  const {switchChain} = useSwitchChain();
   const { writeContract: transfer, data: transferData, isPending: isTransferPending } = useWriteContract()
-
   const { isLoading: isTransferMining, isSuccess: isTransferComplete } = useWaitForTransactionReceipt({
     hash: transferData,
   })
@@ -26,12 +29,16 @@ export function useTokenTransfer(tokenAddress: Hash, decimals: number) {
       return
     }
     try {
-      const amountInWei = ethers.parseUnits(amount, decimals)
-      transfer({
-        address: tokenAddress,
-        abi: TOKEN_ABI,
-        functionName: 'transfer',
-        args: [recipient, amountInWei]
+      switchChain({chainId: SEPOLIA_NETWORK_ID}, {
+        onSuccess: () => {
+          const amountInWei = ethers.parseUnits(amount, decimals)
+          transfer({
+            address: tokenAddress,
+            abi: TOKEN_ABI,
+            functionName: 'transfer',
+            args: [recipient, amountInWei]
+          })
+        }
       })
     } catch (err) {
       console.log(err)
