@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { AlertCircle, Loader2 } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle  } from "@/components/ui/alert"
 import { InputField } from "@/components/ui/input-field"
+import {EstimateGasFee} from "@/app/dashboard/estimate-gas-fee";
 
 
 type TransferFormProps = {
@@ -45,6 +46,7 @@ const TransferForm = ({
         onChange={(e) => setAmount(e.target.value)}
         placeholder="0.0"
       />
+      <EstimateGasFee/>
       <Button
         onClick={handleTransfer}
         disabled={isTransferPending || isTransferMining}

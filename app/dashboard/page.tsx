@@ -1,17 +1,17 @@
 'use client'
 
 import { useAccount } from 'wagmi'
-import {WalletConnectPrompt} from './wallet-connect-prompt'
 import { BalanceDisplay } from './ballance-display'
 import { DashboardLayout } from './dashboard-layout'
 import { TransferForm } from './transfer-form'
 import { useTokenTransfer } from "@/hooks/useTokenTransfer"
 import { useTokenBalance } from "@/hooks/useTokenBalance"
-import {Hash} from "viem";
-
-const TOKEN_ADDRESS = process.env.NEXT_PUBLIC_TOKEN_ADDRESS as Hash
+import {useEffect} from "react";
+import {useRouter} from "next/navigation";
+import {TOKEN_ADDRESS} from "@/constants";
 
 export default function Dashboard() {
+  const router = useRouter()
   const { address, isConnected } = useAccount()
   const { balance, decimals, symbol, isBalanceLoading } = useTokenBalance(address, TOKEN_ADDRESS)
   const {
@@ -26,8 +26,14 @@ export default function Dashboard() {
     handleTransfer
   } = useTokenTransfer(TOKEN_ADDRESS, decimals)
 
+  useEffect(() => {
+    if(!isConnected) {
+      router.push('sign-in')
+    }
+  }, [isConnected, router]);
+
   if (!isConnected) {
-    return <WalletConnectPrompt />;
+    return null
   }
 
   return (
